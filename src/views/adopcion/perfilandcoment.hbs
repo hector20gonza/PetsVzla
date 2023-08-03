@@ -1,0 +1,242 @@
+
+{{#if user }}
+  
+ <section >
+    {{#each publicacion}}
+  <div class="container ">
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-12 ">
+        <div class="card">
+          <div class="col-md-4">  <img src="{{foto}}" class="card-img-top" alt="Imagen del animal"></div>
+          <div class="card-body">
+
+                         <h5 class="card-title"> Adopta a </h5>
+   <h1>{{nombre}}</h1>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><strong>Edad:</strong> {{edad}}</li>
+      <li class="list-group-item"><strong>Raza:</strong> {{especie}}</li>
+      <li class="list-group-item"><strong>Descripcion:</strong>{{ descripcion}}</li>
+      <li class="list-group-item"><strong>Sexo:</strong> {{sexo}}</li>
+    </ul>
+
+ <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+              
+              <a href="#!" id="enlace-comentarios"  class="d-flex align-items-center me-3 enlace-comentarios" data-post-id="{{_id}}">
+               <i class="far fa-comment-dots me-2"></i>
+               <p class="mb-0">Comentarios</p>
+              </a>
+              
+ </div>
+          </div>
+           <div class="row h-100">
+        <div class=" my-auto">
+       
+        </div>
+      
+      </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+</section>
+
+
+
+<!-- Estructura básica del modal -->
+<div id="modal-comentarios" class="modal">
+  <div class="modal-contenido">
+    <span class="cerrar">&times;</span>
+    <h2>Comentarios</h2>
+    <div id="seccion-comentarios-modal">
+     
+        <section  class="comments"    data-post-id="{{_id}}" >
+                   <ul id="comentarios-list"> </ul>        
+         </section>
+    </div>
+    <form id="form-crear-comentario">
+        <h1 class="h3 mb-5">Agregar comentario</h1>
+            <textarea
+              name="body"
+              id="body"
+              rows="2"
+              placeholder="Escribe tu comentario"
+              class="form-control rounded-0 mb-3"
+            ></textarea>
+            
+            <button class="btn btn-dark rounded-0">Enviar</button>
+            <div id="escribiendo-mensaje" style="display: none;">Alguien  está escribiendo...</div>
+   </form>
+  </div>
+</div>
+ {{/each}}
+{{/if}}
+
+  <script src="/socket.io/socket.io.js" charset="utf-8"></script>
+    <script>
+     // Conecta al servidor Socket.IO
+const socket = io();
+
+// Selecciona la sección de comentarios y obtiene el ID de la publicación
+const commentsSection = document.querySelector('section.comments');
+const postId = commentsSection.dataset.postId;
+
+// Se une a la sala de comentarios correspondiente
+socket.emit('join', postId);
+
+// Escucha eventos de comentarios y actualiza la lista de comentarios en tiempo real
+socket.on('comments', (comments) => {
+  // Actualiza la lista de comentarios
+  const commentList = document.getElementById('comentarios-list');
+
+  // Agrega los nuevos comentarios a la lista sin sobrescribir los comentarios existentes
+  comments.forEach((comment) => {
+    const commentExists = Array.from(commentList.children).find((child) => {
+      return child.innerText === comment.body;
+    });
+
+    if (!commentExists) {
+      const newComment = document.createElement('li');
+      newComment.innerText = comment.body;
+      commentList.appendChild(newComment);
+    }
+  });
+});
+
+// Escucha el evento "comment" del servidor y agrega el nuevo comentario a la lista existente de comentarios
+socket.on('comment', (comment) => {
+  const commentList = document.getElementById('comentarios-list');
+  const commentExists = Array.from(commentList.children).find((child) => {
+    return child.innerText === comment.body;
+  });
+
+  if (!commentExists) {
+    const newComment = document.createElement('li');
+    newComment.innerText = comment.body;
+    commentList.appendChild(newComment);
+  }
+});
+
+// Envía el comentario al servidor cuando se envía el formulario
+document.querySelector('form').addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  // Obtiene el comentario del formulario
+  const comment = document.querySelector('textarea[name="body"]').value;
+  const userId = "{{user.id}}";
+  // Envía el comentario al servidor a través del socket
+  socket.emit('comment', { postId, comment, userId });
+
+  // Limpia el campo de texto del formulario
+  document.querySelector('textarea[name="body"]').value = '';
+});
+
+// Escucha el evento "get comments" del cliente y busca los comentarios asociados a una publicación en particular
+const enlacesComentarios = document.querySelectorAll('.enlace-comentarios');
+enlacesComentarios.forEach((enlace) => {
+  enlace.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    // Obtiene el ID de la publicación correspondiente al botón de "Comentarios" que se hizo clic
+    const postId = enlace.dataset.postId;
+
+    // Envía el evento "get comments" al servidor para obtener los comentarios asociados a la publicación
+    socket.emit('get comments', postId);
+  });
+});
+
+// Escucha el evento "comments data" del servidor y muestra los comentarios asociados a la publicación
+socket.on('comments data', (comments) => {
+  const commentList = document.getElementById('comentarios-list');
+  commentList.innerHTML = '';
+
+  comments.forEach((comment) => {
+    const newComment = document.createElement('li');
+    newComment.innerText = comment.body;
+    commentList.appendChild(newComment);
+  });
+});
+
+// Cierra el modal cuando se hace clic en el botón de cerrar
+document.getElementsByClassName('cerrar')[0].addEventListener('click', () => {
+  document.getElementById('modal-comentarios').style.display = 'none';
+});
+
+// Abre el modal cuando se hace clic en el enlace de comentarios
+document.getElementById('enlace-comentarios').addEventListener('click', () => {
+  document.getElementById('modal-comentarios').style.display = 'block';
+});
+
+// Obtiene el campo de texto del formulario
+const commentInput = document.querySelector('textarea[name="body"]');
+
+// Escucha el evento "keydown" del campo de texto para detectar cuando el usuario está escribiendo
+commentInput.addEventListener('keydown', (event) => {
+  const userId = "{{user.id}}";
+  socket.emit('typing', { postId, userId });
+});
+
+// Escucha el evento "blur" del campo de texto para indicar que el usuario dejó de escribir
+commentInput.addEventListener('blur', (event) => {
+  // Envía un mensaje al servidor a través del socket indicando que el usuario dejó de escribir
+  const userId = "{{user.id}}";
+  socket.emit('stop typing', { postId, userId });
+});
+// Escucha el evento "user typing" del servidor y muestra el mensaje de "usuario está escribiendo"
+socket.on('user typing', (userId) => {
+  if (userId !== "{{user.id}}") { // Excluye al usuario actual para no mostrar el mensaje en su propia pantalla
+    document.getElementById('escribiendo-mensaje').style.display = 'block';
+  }
+});
+
+// Escucha el evento "user stop typing" del servidor y oculta el mensaje de "usuario está escribiendo"
+socket.on('user stop typing', (userId) => {
+  if (userId !== "{{user.id}}") { // Excluye al usuario actual para no ocultar el mensaje en su propia pantalla
+    document.getElementById('escribiendo-mensaje').style.display = 'none';
+  }
+});
+
+    </script>
+ <style>
+  .modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-contenido {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* Estilos para el botón de cerrar */
+.cerrar {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.cerrar:hover,
+.cerrar:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+ </style>
+ 
+  

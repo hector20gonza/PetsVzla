@@ -1,0 +1,53 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">
+      <img src="https://mdbootstrap.com/img/Photos/new-templates/animal-shelter/logo.png" height="30" alt="24" loading="lazy">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-4 mb-lg-0">
+        {{#if user}}
+          <div></div>
+        {{else}}
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">Fundacion</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/about">Nosotros</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/auth/register">Registrarse</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/auth/login">Login</a>
+          </li>
+          
+        {{/if}}
+      </ul>
+      {{#if user}}
+        <div class="navbar-nav ms-auto">
+          <div>
+            <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/notifications/notification">
+              <img src="/img/notifications.png" alt="hugenerd" width="40" height="40" class="rounded-circle">
+            </a>
+             </li>
+ 
+          </div>
+          <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="/img/pngegg.png" alt="hugenerd" width="40" height="40" class="rounded-circle">
+              <span class="d-none d-sm-inline mx-1">{{user.name}}</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="navbarDropdown">
+              
+              <li><a class="dropdown-item" href="/auth/logout">Cerrar sesión</a></li>
+            </ul>
+          </div>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,78 @@
+
+ <title>Formulario de Adopción</title>
+ <!-- Agregar los enlaces a los archivos CSS de Bootstrap -->
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+ <div class="container">
+  <h2>Publicacion para  Adopción</h2>
+  <form action="/adopcion/publicanimal" method="POST" enctype="multipart/form-data" >
+   <div class="form-group">
+    <label for="nombre">Nombre del animal:</label>
+    <input type="text" class="form-control" id="nombre" placeholder="Ingrese el nombre del animal" name ="nombre">
+   </div>
+   <div class="form-group">
+    <label for="especie">Especie:</label>
+    <select class="form-control" id="especie"  name="especie">
+     <option>Perro</option>
+     <option>Gato</option>
+     <option>Conejo</option>
+    </select>
+   </div>
+   <div class="form-group">
+    <label for="especie">Sexo:</label>
+    <select class="form-control" id="especie"  name="sexo">
+     <option>Masculino</option>
+     <option>Femenino</option>
+    
+    </select>
+   </div>
+   <div class="form-group">
+    <label for="edad">Edad:</label>
+    <input type="number" class="form-control" id="edad" placeholder="Ingrese la edad del animal" name="edad">
+   </div>
+   <div class="form-group">
+    <label for="descripcion">Descripción:</label>
+    <textarea class="form-control" id="descripcion" placeholder="Ingrese una descripción del animal" name="descripcion"></textarea>
+   </div>
+   <div class="form-group row">
+  
+            <div class="col-sm-2" style="margin-top: 50px;">
+                <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail"
+                        alt="avatar">
+                    <h6>Upload a different photo...</h6>
+                    <input type="file" name="image" class="text-center center-block file-upload">
+           
+             </div>
+   </div>
+
+
+
+
+   <button type="submit" class="btn btn-primary">Publicar</button>
+  </form>
+ </div>
+            
+               
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var readURL = function (input) {
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+
+                        reader.onload = function (e) {
+                            $('.avatar').attr('src', e.target.result);
+                        }
+
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+
+                $(".file-upload").on('change', function () {
+                    readURL(this);
+                });
+            });
+        </script>
+

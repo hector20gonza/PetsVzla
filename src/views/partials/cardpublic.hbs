@@ -1,0 +1,32 @@
+
+<div class="row">
+     {{#each publicaciones}}
+<div class="col-md-3">
+<div class="card border-success border-right-0" >
+  
+  <img src="{{foto}}" class="card-img-top" alt="Imagen del animal">
+  <div class="card-body" >
+    <h5 class="card-title"> Adopta a </h5>
+   <h1>{{nombre}}</h1>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><strong>Edad:</strong> {{edad}}</li>
+      <li class="list-group-item"><strong>Raza:</strong> {{especie}}</li>
+      <li class="list-group-item"><strong>Descripcion:</strong>{{ descripcion}}</li>
+      <li class="list-group-item"><strong>Sexo:</strong> {{sexo}}</li>
+    </ul>
+    
+   
+<a href="/adopcions/{{_id}}" class="btn btn-primary" > {{estado}}</a>
+<!-- Modal -->
+
+
+  </div>
+
+</div>
+</div>
+  {{/each}}
+</div>
+
+<!-- Button trigger modal -->
+
+

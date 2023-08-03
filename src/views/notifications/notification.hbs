@@ -1,0 +1,110 @@
+{{#if user }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notificaciones</title>
+  
+</head>
+<body>
+  <div class="notifications-container">
+    <h1>Notificaciones</h1>
+    <ul class="notifications-list" id="notifications-list">
+      <!-- Aquí se mostrarán las notificaciones dinámicamente con JavaScript -->
+      <!-- Por ejemplo, cada notificación puede estar representada por un <li> -->
+     <li>Has recibido un nuevo comentario en tu publicación.</li> 
+    </ul>
+  </div>
+</body>
+</html>
+{{/if}}
+<script src="/socket.io/socket.io.js" charset="utf-8"></script>
+<script>
+  const socket =  io();
+const userId = "{{user.id}}";
+
+socket.on(`notifications:${userId}`, (data) => {
+  console.log(data);
+  const notificationsList = document.getElementById('notifications-list');
+  const newNotification = document.createElement('li');
+  newNotification.innerText = `Has recibido un nuevo comentario en la publicación ${data.postId}.`;
+  notificationsList.appendChild(newNotification);
+});
+</script>
+<style>
+  /* Estilos para la vista de notificaciones */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f1f1f1;
+  margin: 0;
+  padding: 0;
+}
+
+.notifications-container {
+  max-width: auto;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.notifications-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.notifications-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 20px;
+  color: #555;
+}
+
+.notifications-list li:last-child {
+  border-bottom: none;
+}
+
+.notification-time {
+  font-size: 12px;
+  color: #999;
+}
+
+/* Estilo para el icono de campanita */
+.notification-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #f1f1f1;
+  cursor: pointer;
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: red;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 50%;
+  font-size: 12px;
+}
+
+/* Personaliza el estilo según tus preferencias */
+
+</style>

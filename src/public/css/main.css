@@ -1,0 +1,41 @@
+body {
+  background: #dee3e4;
+}
+
+.logo {
+  width: 30%;
+}
+
+.bg-black {
+  background: #639daf;
+}
+.navbar-nav li a {
+  line-height: 10px;
+  height: 20px;
+  padding-top: 0;
+}
+.basic {
+  display: grid;
+  grid-template-rows:  90px ;
+  grid-template-columns:  400px;
+  grid-template-areas:
+      "header header header header"
+      ".      nav    main   .     "
+      "footer footer footer footer";
+}
+.basic .main {
+  grid-area: main;
+ 
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat( 4, 1fr);
+  grid-column-gap: 30px;
+  margin: 15px;
+}
+
+.btn-outline-secondary {
+//background-color: #83A00A;
+//color: #C53A83;
+color: #83A00A;
+}

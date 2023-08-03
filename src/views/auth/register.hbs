@@ -1,0 +1,70 @@
+<div class="row">
+  <div class="col-md-4 mx-auto">
+    <div class="card bg-info text-white">
+      <div class="card-header pt-5">
+        <h4 class="text-center">
+          Registro de usuario
+        </h4>
+      </div>
+      <div class="card-body">
+        <form action="/auth/register" method="POST">
+          <div class="mb-3">
+            <label for="name">Nombre:</label>
+            <input
+              type="text"
+              class="form-control bg-dark text-white"
+              name="name"
+              placeholder="Name"
+              value="{{name}}"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="email">Email:</label>
+            <input
+              type="email"
+              class="form-control bg-dark text-white"
+              name="email"
+              placeholder="Email"
+              value="{{email}}"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="password">contraseña:</label>
+            <input
+              type="password"
+              class="form-control bg-dark text-white"
+              name="password"
+              placeholder="Password"
+              value="{{password}}"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="confirm_password">Cofirmar Contraseña:</label>
+            <input
+              type="password"
+              class="form-control bg-dark text-white"
+              name="confirm_password" 
+              placeholder="Confirm Password"
+              value="{{confirm_password}}"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="telefono">Telefono:</label>
+            <input
+              type="text"
+              class="form-control bg-dark text-white"
+              name="telefono" 
+              placeholder="Telefonosss"
+              value="{{confirm_password}}"
+            />
+          </div>
+          <button class="btn btn-success btn-block">
+          Registrarse
+          </button>
+        </form>
+      </div>
+      <p class="text-center">¿Si posees cuenta por favor inicia sesion?
+        <a href="/auth/login" class="text-dark">Login</a></p>
+    </div>
+  </div>
+</div>
